@@ -1,0 +1,16 @@
+{
+    "name": "Trivastu - Premium Construction Company",
+    "short_name": "Trivastu",
+    "description": "Trivastu turns your dreams into reality. We are the leading turnkey construction, architecture, and interior design company in Ranchi, Jharkhand.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#C8A45E",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "192x192",
+            "type": "image/x-icon"
+        }
+    ]
+}
