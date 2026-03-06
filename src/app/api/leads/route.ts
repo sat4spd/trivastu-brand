@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongoose";
 import Lead from "@/models/Lead";
+import User from "@/models/User";
 import { sendLeadEmailToAdmin } from "@/lib/mailer";
 import { sendWhatsAppNotification } from "@/lib/whatsapp";
 
@@ -47,8 +48,32 @@ export async function POST(req: Request) {
         // Connect to MongoDB
         await dbConnect();
 
+        // Find or Create User by phone
+        let user = await User.findOne({ phone });
+        if (!user) {
+            user = await User.create({
+                phone,
+                name,
+                email: email || "",
+                role: "customer"
+            });
+        } else {
+            // Update name and email if they were previously unknown
+            let updateNeeded = false;
+            if (name && (!user.name || user.name === "Unknown")) {
+                user.name = name;
+                updateNeeded = true;
+            }
+            if (email && !user.email) {
+                user.email = email;
+                updateNeeded = true;
+            }
+            if (updateNeeded) await user.save();
+        }
+
         // Create DB Entry
         const newLead = await Lead.create({
+            customerId: user._id,
             name,
             phone,
             email,

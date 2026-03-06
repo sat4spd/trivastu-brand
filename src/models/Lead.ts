@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ILead extends Document {
+    customerId: mongoose.Types.ObjectId;
     name: string;
     phone: string;
     email?: string;
@@ -11,6 +12,7 @@ export interface ILead extends Document {
 }
 
 const LeadSchema = new Schema<ILead>({
+    customerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     phone: { type: String, required: true },
     email: { type: String, required: false },
