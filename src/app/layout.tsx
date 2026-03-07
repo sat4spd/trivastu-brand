@@ -67,6 +67,7 @@ export const metadata: Metadata = {
   },
 };
 
+import { Suspense } from "react";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 
@@ -80,8 +81,10 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${inter.variable} antialiased bg-background text-foreground`}
       >
-        <GoogleAnalytics />
-        <MetaPixel />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+          <MetaPixel />
+        </Suspense>
 
         <script
           type="application/ld+json"
