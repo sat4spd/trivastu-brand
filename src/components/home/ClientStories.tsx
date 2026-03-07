@@ -1,48 +1,38 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Star, MapPin, Quote } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const testimonials = [
-    {
-        name: "Rajesh Kumar",
-        location: "Hatia, Ranchi",
-        rating: 5,
-        text: "Trivastu Realty delivered exactly what they promised. The construction quality and attention to detail was outstanding. Our villa was completed on time.",
-        journey: "Consultation → Design → Construction → Move-in",
-    },
-    {
-        name: "Priya Singh",
-        location: "Doranda, Ranchi",
-        rating: 5,
-        text: "Professional team, transparent pricing, and timely completion. They made our dream home a reality. Highly recommended for families.",
-        journey: "Consultation → Design → Construction → Move-in",
-    },
-    {
-        name: "Amit Sharma",
-        location: "Kanke Road, Ranchi",
-        rating: 5,
-        text: "From design to handover, the entire process was smooth. The regular progress updates and site visit photos kept us informed throughout.",
-        journey: "Consultation → Design → Construction → Move-in",
-    },
-    {
-        name: "Deepak Sinha",
-        location: "Bistupur, Jamshedpur",
-        rating: 5,
-        text: "We bought a plot in their Green Valley project and the experience was seamless. All documents verified, RERA registered, and transparent process.",
-        journey: "Plot Search → Site Visit → Booking → Registration",
-    },
-];
-
 export default function ClientStories() {
+    const [testimonials, setTestimonials] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const sectionRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement[]>([]);
 
     useEffect(() => {
+        const fetchTestimonials = async () => {
+            try {
+                const res = await fetch("https://api.trivastu.com/api/cms/testimonials");
+                if (res.ok) {
+                    const data = await res.json();
+                    setTestimonials(data.slice(0, 4)); // Show recent 4
+                }
+            } catch (err) {
+                console.error("Failed to fetch testimonials:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTestimonials();
+    }, []);
+
+    useEffect(() => {
+        if (loading || testimonials.length === 0) return;
+
         const section = sectionRef.current;
         if (!section) return;
 
@@ -70,7 +60,7 @@ export default function ClientStories() {
         }, section);
 
         return () => ctx.revert();
-    }, []);
+    }, [loading, testimonials]);
 
     return (
         <section ref={sectionRef} className="section-padding">
@@ -92,7 +82,7 @@ export default function ClientStories() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {testimonials.map((t, index) => (
                         <div
-                            key={t.name}
+                            key={t._id || index}
                             ref={(el) => {
                                 if (el) cardsRef.current[index] = el;
                             }}
@@ -106,7 +96,7 @@ export default function ClientStories() {
 
                             {/* Stars */}
                             <div className="flex gap-1 mb-4">
-                                {Array.from({ length: t.rating }).map((_, i) => (
+                                {Array.from({ length: t.rating || 5 }).map((_, i) => (
                                     <Star
                                         key={i}
                                         size={14}
@@ -117,26 +107,24 @@ export default function ClientStories() {
 
                             {/* Text */}
                             <p className="text-muted-foreground leading-relaxed mb-6 italic">
-                                &ldquo;{t.text}&rdquo;
+                                &ldquo;{t.content}&rdquo;
                             </p>
 
-                            {/* Journey */}
-                            <div className="text-xs text-gold/60 mb-4 flex items-center gap-1">
-                                {t.journey}
-                            </div>
-
                             {/* Author */}
-                            <div className="flex items-center gap-3 pt-4 border-t border-border">
-                                <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold font-bold text-sm">
-                                    {t.name.charAt(0)}
-                                </div>
+                            <div className="flex items-center gap-3 pt-6 border-t border-border">
+                                {t.image ? (
+                                    <img src={t.image} alt={t.authorName} className="w-10 h-10 rounded-full object-cover" />
+                                ) : (
+                                    <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold font-bold text-sm">
+                                        {t.authorName?.charAt(0) || 'U'}
+                                    </div>
+                                )}
                                 <div>
                                     <div className="text-sm font-semibold text-foreground">
-                                        {t.name}
+                                        {t.authorName}
                                     </div>
                                     <div className="text-xs text-muted-foreground flex items-center gap-1">
-                                        <MapPin size={10} className="text-gold" />
-                                        {t.location}
+                                        {t.authorRole}
                                     </div>
                                 </div>
                             </div>

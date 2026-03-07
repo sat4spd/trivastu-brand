@@ -67,6 +67,9 @@ export const metadata: Metadata = {
   },
 };
 
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MetaPixel from "@/components/MetaPixel";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -77,6 +80,9 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${inter.variable} antialiased bg-background text-foreground`}
       >
+        <GoogleAnalytics />
+        <MetaPixel />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -8,46 +8,32 @@ import { ArrowRight, MapPin } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-    {
-        title: "Modern Villa - Doranda",
-        location: "Ranchi",
-        type: "Residential",
-        status: "Completed",
-        description: "3BHK luxury villa with contemporary architecture and premium interiors.",
-        image: "/images/project-villa.png",
-    },
-    {
-        title: "Green Valley Plots",
-        location: "Hazaribagh",
-        type: "Plots",
-        status: "Ongoing",
-        description: "Premium residential plots with 360° green surroundings and modern infrastructure.",
-        image: "/images/plot-landscape.png",
-    },
-    {
-        title: "Skyline Apartments",
-        location: "Jamshedpur",
-        type: "Residential",
-        status: "Completed",
-        description: "Multi-storey apartments combining modern design with city convenience.",
-        image: "/images/project-apartments.png",
-    },
-    {
-        title: "Urban Square Commercial",
-        location: "Bokaro",
-        type: "Commercial",
-        status: "Upcoming",
-        description: "State-of-the-art commercial complex for retail and office space.",
-        image: "/images/commercial-building.png",
-    },
-];
-
 export default function ProjectShowcase() {
+    const [projects, setProjects] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const sectionRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<HTMLDivElement[]>([]);
 
     useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const res = await fetch("https://api.trivastu.com/api/cms/projects");
+                if (res.ok) {
+                    const data = await res.json();
+                    setProjects(data.slice(0, 4)); // Only show top 4 on homepage
+                }
+            } catch (err) {
+                console.error("Failed to fetch projects:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProjects();
+    }, []);
+
+    useEffect(() => {
+        if (loading || projects.length === 0) return;
+
         const section = sectionRef.current;
         if (!section) return;
 
@@ -97,7 +83,7 @@ export default function ProjectShowcase() {
         }, section);
 
         return () => ctx.revert();
-    }, []);
+    }, [loading, projects]);
 
     return (
         <section ref={sectionRef} className="section-padding">
@@ -151,10 +137,10 @@ export default function ProjectShowcase() {
                                 <div className="absolute top-4 right-4 z-10">
                                     <span
                                         className={`px-3 py-1 text-xs rounded-full backdrop-blur-sm ${project.status === "Completed"
-                                                ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                                                : project.status === "Ongoing"
-                                                    ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                                                    : "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                                            ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                                            : project.status === "Ongoing"
+                                                ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                                : "bg-blue-500/20 text-blue-400 border border-blue-500/30"
                                             }`}
                                     >
                                         {project.status}
