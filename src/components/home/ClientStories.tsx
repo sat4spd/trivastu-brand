@@ -16,8 +16,7 @@ export default function ClientStories() {
     useEffect(() => {
         const fetchTestimonials = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.trivastu.com";
-                const res = await fetch(`${apiUrl}/api/cms/testimonials`);
+                const res = await fetch("https://api.trivastu.com/api/cms/testimonials");
                 if (res.ok) {
                     const data = await res.json();
                     setTestimonials(data.slice(0, 4)); // Show recent 4

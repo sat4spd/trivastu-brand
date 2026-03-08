@@ -17,8 +17,7 @@ export default function ProjectShowcase() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.trivastu.com";
-                const res = await fetch(`${apiUrl}/api/cms/projects`);
+                const res = await fetch("https://api.trivastu.com/api/cms/projects");
                 if (res.ok) {
                     const data = await res.json();
                     setProjects(data.slice(0, 4)); // Only show top 4 on homepage

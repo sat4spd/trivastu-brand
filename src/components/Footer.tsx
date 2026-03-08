@@ -1,11 +1,10 @@
+"use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-    Building2,
     MapPin,
-    Ruler,
-    TrendingUp,
     Mail,
     Phone,
     ArrowUpRight,
@@ -27,23 +26,27 @@ const company = [
 
 const locations = ["Ranchi", "Jamshedpur", "Bokaro", "Hazaribagh"];
 
-export default async function Footer() {
-    let businessInfo = {
+export default function Footer() {
+    const [businessInfo, setBusinessInfo] = useState({
         phone: "+91 8655202633",
         email: "contact@trivastu.com",
         address: "Singhmore, Hatia, Ranchi - 834003"
-    };
+    });
 
-    try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.trivastu.com";
-        const res = await fetch(`${apiUrl}/api/cms/business-info`, { next: { revalidate: 3600 } });
-        if (res.ok) {
-            const data = await res.json();
-            if (data && data.phone) businessInfo = data;
-        }
-    } catch (err) {
-        console.error("Failed to fetch business info for footer:", err);
-    }
+    useEffect(() => {
+        const fetchInfo = async () => {
+            try {
+                const res = await fetch("https://api.trivastu.com/api/cms/business-info");
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.phone) setBusinessInfo(data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch business info:", err);
+            }
+        };
+        fetchInfo();
+    }, []);
 
     return (
         <footer className="border-t border-border bg-[#060606]">
