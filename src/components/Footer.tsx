@@ -1,4 +1,3 @@
-"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +27,24 @@ const company = [
 
 const locations = ["Ranchi", "Jamshedpur", "Bokaro", "Hazaribagh"];
 
-export default function Footer() {
+export default async function Footer() {
+    let businessInfo = {
+        phone: "+91 8655202633",
+        email: "contact@trivastu.com",
+        address: "Singhmore, Hatia, Ranchi - 834003"
+    };
+
+    try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.trivastu.com";
+        const res = await fetch(`${apiUrl}/api/cms/business-info`, { next: { revalidate: 3600 } });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.phone) businessInfo = data;
+        }
+    } catch (err) {
+        console.error("Failed to fetch business info for footer:", err);
+    }
+
     return (
         <footer className="border-t border-border bg-[#060606]">
             <div className="max-w-7xl mx-auto px-6 py-16">
@@ -60,22 +76,22 @@ export default function Footer() {
                         </p>
                         <div className="space-y-2">
                             <a
-                                href="tel:+918655202633"
+                                href={`tel:${businessInfo.phone?.replace(/\s+/g, '') || "+918655202633"}`}
                                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
                             >
                                 <Phone size={14} className="text-gold" />
-                                +91 8655202633
+                                {businessInfo.phone || "+91 8655202633"}
                             </a>
                             <a
-                                href="mailto:contact@trivastu.com"
+                                href={`mailto:${businessInfo.email || "contact@trivastu.com"}`}
                                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
                             >
                                 <Mail size={14} className="text-gold" />
-                                contact@trivastu.com
+                                {businessInfo.email || "contact@trivastu.com"}
                             </a>
                             <div className="flex items-start gap-2 text-sm text-muted-foreground">
                                 <MapPin size={14} className="text-gold mt-0.5 flex-shrink-0" />
-                                Singhmore, Hatia, Ranchi - 834003
+                                {businessInfo.address || "Singhmore, Hatia, Ranchi - 834003"}
                             </div>
                         </div>
                     </div>
