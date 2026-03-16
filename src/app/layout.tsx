@@ -70,12 +70,16 @@ export const metadata: Metadata = {
 import { Suspense } from "react";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
+import ChatAssistant from "@/components/ChatAssistant";
+import { getBusinessInfo } from "@/lib/businessInfo";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const businessInfo = await getBusinessInfo();
+
   return (
     <html lang="en" className="dark">
       <body
@@ -92,17 +96,19 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Trivastu Ventures",
+              "name": businessInfo.companyName || "Trivastu Ventures",
               "url": "https://trivastu.com",
               "logo": "https://trivastu.com/logo.png",
               "sameAs": [
-                "https://www.facebook.com/trivastu",
-                "https://www.instagram.com/trivastu",
-                "https://www.linkedin.com/company/trivastu"
-              ],
+                businessInfo.facebook,
+                businessInfo.instagram,
+                businessInfo.linkedin,
+                businessInfo.twitter,
+                businessInfo.youtube
+              ].filter(Boolean),
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+91-8655202633",
+                "telephone": businessInfo.phone || "+91-8655202633",
                 "contactType": "customer service",
                 "areaServed": "IN",
                 "availableLanguage": "en"
@@ -114,7 +120,8 @@ export default function RootLayout({
         <SmoothScroll>
           <Navbar />
           <main>{children}</main>
-          <Footer />
+          <Footer businessInfo={businessInfo} />
+          <ChatAssistant waNumber={businessInfo.whatsapp} />
         </SmoothScroll>
       </body>
     </html>

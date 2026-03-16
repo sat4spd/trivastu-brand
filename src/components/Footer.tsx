@@ -8,7 +8,13 @@ import {
     Mail,
     Phone,
     ArrowUpRight,
+    Facebook,
+    Instagram,
+    Youtube,
+    Linkedin,
+    Twitter
 } from "lucide-react";
+import { BusinessInfo } from "@/lib/businessInfo";
 
 const platforms = [
     { label: "Construction Services", href: "https://realty.trivastu.com" },
@@ -26,27 +32,14 @@ const company = [
 
 const locations = ["Ranchi", "Jamshedpur", "Bokaro", "Hazaribagh"];
 
-export default function Footer() {
-    const [businessInfo, setBusinessInfo] = useState({
-        phone: "+91 8655202633",
-        email: "contact@trivastu.com",
-        address: "Singhmore, Hatia, Ranchi - 834003"
-    });
+interface FooterProps {
+    businessInfo?: BusinessInfo;
+}
 
-    useEffect(() => {
-        const fetchInfo = async () => {
-            try {
-                const res = await fetch("https://api.trivastu.com/api/cms/business-info");
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.phone) setBusinessInfo(data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch business info:", err);
-            }
-        };
-        fetchInfo();
-    }, []);
+export default function Footer({ businessInfo = {} }: FooterProps) {
+    const phone = businessInfo?.phone || "+91 8655202633";
+    const email = businessInfo?.email || "contact@trivastu.com";
+    const address = businessInfo?.address || "Singhmore, Hatia, Ranchi - 834003";
 
     return (
         <footer className="border-t border-border bg-[#060606]">
@@ -77,25 +70,54 @@ export default function Footer() {
                             A modern prop-tech ecosystem building dreams across Jharkhand.
                             Construction, plots, and real estate development.
                         </p>
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-6">
                             <a
-                                href={`tel:${businessInfo.phone?.replace(/\s+/g, '') || "+918655202633"}`}
+                                href={`tel:${phone.replace(/\s+/g, '')}`}
                                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
                             >
                                 <Phone size={14} className="text-gold" />
-                                {businessInfo.phone || "+91 8655202633"}
+                                {phone}
                             </a>
                             <a
-                                href={`mailto:${businessInfo.email || "contact@trivastu.com"}`}
+                                href={`mailto:${email}`}
                                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-gold transition-colors"
                             >
                                 <Mail size={14} className="text-gold" />
-                                {businessInfo.email || "contact@trivastu.com"}
+                                {email}
                             </a>
                             <div className="flex items-start gap-2 text-sm text-muted-foreground">
                                 <MapPin size={14} className="text-gold mt-0.5 flex-shrink-0" />
-                                {businessInfo.address || "Singhmore, Hatia, Ranchi - 834003"}
+                                {address}
                             </div>
+                        </div>
+
+                        {/* Social Links */}
+                        <div className="flex items-center gap-4">
+                            {businessInfo?.facebook && (
+                                <a href={businessInfo.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-gold transition-colors">
+                                    <Facebook size={18} />
+                                </a>
+                            )}
+                            {businessInfo?.instagram && (
+                                <a href={businessInfo.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-gold transition-colors">
+                                    <Instagram size={18} />
+                                </a>
+                            )}
+                            {businessInfo?.youtube && (
+                                <a href={businessInfo.youtube} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-gold transition-colors">
+                                    <Youtube size={18} />
+                                </a>
+                            )}
+                            {businessInfo?.linkedin && (
+                                <a href={businessInfo.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-gold transition-colors">
+                                    <Linkedin size={18} />
+                                </a>
+                            )}
+                            {businessInfo?.twitter && (
+                                <a href={businessInfo.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-gold transition-colors">
+                                    <Twitter size={18} />
+                                </a>
+                            )}
                         </div>
                     </div>
 

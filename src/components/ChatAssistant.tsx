@@ -5,7 +5,6 @@ import { MessageCircle, X, Send, Bot, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const API = "https://api.trivastu.com/api/cms";
-const WA_NUMBER = "918655202633";
 const SESSION_ID = typeof window !== "undefined"
     ? (localStorage.getItem("tv_chat_session") || (() => {
         const id = Math.random().toString(36).slice(2);
@@ -24,7 +23,12 @@ interface Message {
 
 const QUICK = ["Available plots?", "Construction cost?", "Book site visit"];
 
-export default function ChatAssistant() {
+interface ChatProps {
+    waNumber?: string;
+}
+
+export default function ChatAssistant({ waNumber = "918655202633" }: ChatProps) {
+    const activeWaNumber = waNumber.replace(/\D/g, "");
     const [open, setOpen] = useState(false);
     const [step, setStep] = useState<Step>("greeting");
     const [visitorName, setVisitorName] = useState("");
@@ -97,7 +101,7 @@ export default function ChatAssistant() {
                 body: JSON.stringify({ name: visitorName, phone: digits, source: "website_chat" }),
             }).catch(() => {});
 
-            const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hi! I'm ${visitorName}. I'd like to enquire about properties.`)}`;
+            const waLink = `https://wa.me/${activeWaNumber}?text=${encodeURIComponent(`Hi! I'm ${visitorName}. I'd like to enquire about properties.`)}`;
             await sendWithTyping(async () => {
                 await delay(900);
                 addBot(
@@ -119,12 +123,12 @@ export default function ChatAssistant() {
                 const data = await res.json();
                 addBot(data.reply || "Let me connect you with our team! 😊");
             } catch {
-                addBot("Sorry, I'm having some trouble right now. You can reach us at +91 8655202633 or on WhatsApp! 📞");
+                addBot(`Sorry, I'm having some trouble right now. You can reach us at +${activeWaNumber} or on WhatsApp! 📞`);
             }
         });
     };
 
-    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+    const waLink = `https://wa.me/${activeWaNumber}?text=${encodeURIComponent(
         visitorName ? `Hi! I'm ${visitorName}. I'd like to enquire about properties.` : "Hi! I'd like to enquire about properties at Trivastu."
     )}`;
 

@@ -1,16 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Loader2 } from "lucide-react";
-
-const contactInfo = [
-    { icon: Phone, label: "Phone", value: "+91 8655202633", href: "tel:+918655202633" },
-    { icon: Mail, label: "Email", value: "contact@trivastu.com", href: "mailto:contact@trivastu.com" },
-    { icon: MapPin, label: "Office", value: "Singhmore, Hatia, Ranchi - 834003", href: null },
-    { icon: Clock, label: "Hours", value: "Mon - Sat, 9AM - 7PM", href: null },
-];
+import { BusinessInfo } from "@/lib/businessInfo";
 
 const serviceOptions = [
     "Build a House",
@@ -33,6 +27,21 @@ export default function ContactPage() {
         budget: "",
         message: "",
     });
+
+    const [businessInfo, setBusinessInfo] = useState<BusinessInfo>({});
+    useEffect(() => {
+        fetch("https://api.trivastu.com/api/cms/business-info")
+            .then(res => res.json())
+            .then(data => setBusinessInfo(data || {}))
+            .catch(console.error);
+    }, []);
+
+    const dynamicContactInfo = [
+        { icon: Phone, label: "Phone", value: businessInfo.phone || "+91 8655202633", href: `tel:${(businessInfo.phone || "+918655202633").replace(/\s+/g, '')}` },
+        { icon: Mail, label: "Email", value: businessInfo.email || "contact@trivastu.com", href: `mailto:${businessInfo.email || "contact@trivastu.com"}` },
+        { icon: MapPin, label: "Office", value: businessInfo.address || "Singhmore, Hatia, Ranchi - 834003", href: null },
+        { icon: Clock, label: "Hours", value: "Mon - Sat, 9AM - 7PM", href: null },
+    ];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -93,7 +102,7 @@ export default function ContactPage() {
                         <div className="space-y-6">
                             <h2 className="text-2xl font-bold font-[var(--font-outfit)]">Contact Info</h2>
                             <div className="space-y-4">
-                                {contactInfo.map((item) => (
+                                {dynamicContactInfo.map((item) => (
                                     <div key={item.label} className="flex items-start gap-4 p-4 rounded-xl border border-border bg-surface-light hover:border-gold/30 transition-all duration-500 group">
                                         <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0 group-hover:bg-gold/20 transition-colors">
                                             <item.icon size={18} className="text-gold" />
