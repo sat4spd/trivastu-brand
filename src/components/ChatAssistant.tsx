@@ -27,8 +27,22 @@ interface ChatProps {
     waNumber?: string;
 }
 
-export default function ChatAssistant({ waNumber = "918655202633" }: ChatProps) {
-    const activeWaNumber = waNumber.replace(/\D/g, "");
+export default function ChatAssistant({ waNumber }: ChatProps) {
+    const [activeWaNumber, setActiveWaNumber] = useState(
+        waNumber ? waNumber.replace(/\D/g, "") : "918655202633"
+    );
+
+    // Always fetch fresh waNumber from API (SSR may have failed on EC2)
+    useEffect(() => {
+        fetch("https://api.trivastu.com/api/cms/business-info", { cache: "no-store" })
+            .then(res => res.json())
+            .then(data => {
+                if (data?.whatsapp) {
+                    setActiveWaNumber(data.whatsapp.replace(/\D/g, ""));
+                }
+            })
+            .catch(() => {});
+    }, []);
     const [open, setOpen] = useState(false);
     const [step, setStep] = useState<Step>("greeting");
     const [visitorName, setVisitorName] = useState("");
