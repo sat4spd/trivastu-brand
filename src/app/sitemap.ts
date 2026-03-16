@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         {
             url: 'https://trivastu.com',
             lastModified: new Date(),
-            changeFrequency: 'yearly',
+            changeFrequency: 'monthly',
             priority: 1,
         },
         {
@@ -21,10 +21,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
+            url: 'https://trivastu.com/projects',
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
             url: 'https://trivastu.com/contact',
             lastModified: new Date(),
             changeFrequency: 'yearly',
-            priority: 0.8,
+            priority: 0.7,
         },
     ]
 }

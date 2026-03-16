@@ -1,0 +1,6 @@
+Contact: mailto:security@trivastu.com
+Contact: mailto:contact@trivastu.com
+Expires: 2027-03-16T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://trivastu.com/.well-known/security.txt
+Policy: https://trivastu.com/privacy-policy
