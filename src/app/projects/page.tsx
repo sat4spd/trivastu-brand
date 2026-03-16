@@ -14,7 +14,7 @@ const projects = [
     { title: "Green Valley Plots", location: "Hazaribagh", type: "Plots", status: "Ongoing", area: "50+ Plots", description: "Premium residential plots with 360 degree green surroundings and modern infrastructure.", image: "/images/plot-landscape.png" },
     { title: "Skyline Apartments", location: "Jamshedpur", type: "Residential", status: "Completed", area: "8 Floors", description: "Multi-storey apartments combining modern design with city convenience.", image: "/images/proj-township.png" },
     { title: "Urban Square Commercial", location: "Bokaro", type: "Commercial", status: "Upcoming", area: "15000 sq.ft", description: "State-of-the-art commercial complex for retail and office space.", image: "/images/proj-commercial.png" },
-    { title: "Lakeview Heritage Villas", location: "Ranchi", type: "Residential", status: "Completed", area: "3200 sq.ft", description: "Luxury duplex villas with lake-facing views and premium landscaping.", image: "/images/proj-duplex.png" },
+    { title: "Lakeview Heritage Villas", location: "Ranchi", type: "Residential", status: "Completed", area: "3200 sq.ft", description: "Luxury duplex villas with lake-facing views and premium landscaping.", image: "/images/proj-villa.png" },
     { title: "Sunrise Estate Plots", location: "Jamshedpur", type: "Plots", status: "Ongoing", area: "120 Plots", description: "Large-scale township plots with wide roads, parks, and amenities.", image: "/images/plot-landscape.png" },
 ];
 
