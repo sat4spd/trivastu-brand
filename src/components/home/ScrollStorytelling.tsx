@@ -34,7 +34,7 @@ const stages = [
         description:
             "With premium materials and skilled craftsmen, we raise structures from the ground - efficiently, transparently, and with uncompromising quality.",
         icon: Building,
-        image: "/images/project-apartments.png",
+        image: "/images/proj-township.png",
     },
     {
         id: "completion",
@@ -43,7 +43,7 @@ const stages = [
         description:
             "The lights come on. The doors open. Your dream home is ready - a testament to trust, quality, and the Trivastu promise.",
         icon: Sparkles,
-        image: "/images/project-villa.png",
+        image: "/images/proj-villa.png",
     },
 ];
 
