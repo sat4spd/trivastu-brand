@@ -37,9 +37,24 @@ interface FooterProps {
 }
 
 export default function Footer({ businessInfo = {} }: FooterProps) {
-    const phone = businessInfo?.phone || "+91 8655202633";
-    const email = businessInfo?.email || "contact@trivastu.com";
-    const address = businessInfo?.address || "Singhmore, Hatia, Ranchi - 834003";
+    const [info, setInfo] = useState<BusinessInfo>(businessInfo);
+
+    useEffect(() => {
+        if (!businessInfo || Object.keys(businessInfo).length === 0) {
+            const fetchInfo = async () => {
+                try {
+                    const res = await fetch("https://api.trivastu.com/api/cms/business-info", { cache: "no-store" });
+                    const data = await res.json();
+                    setInfo(data);
+                } catch (e) { }
+            };
+            fetchInfo();
+        }
+    }, [businessInfo]);
+
+    const phone = info?.phone || "+91 8655202633";
+    const email = info?.email || "contact@trivastu.com";
+    const address = info?.address || "Singhmore, Hatia, Ranchi - 834003";
 
     return (
         <footer className="border-t border-border bg-[#060606]">
