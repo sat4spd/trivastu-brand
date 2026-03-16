@@ -15,10 +15,10 @@ const portfolioItems = [
     { title: "Green Heights Plot", category: "Plots", status: "Completed", city: "Hazaribagh", image: "/images/plot-landscape.png" },
     { title: "City Center Mall", category: "Commercial", status: "Ongoing", city: "Bokaro", image: "/images/proj-commercial.png" },
     { title: "Lakeview Duplex", category: "Residential", status: "Completed", city: "Ranchi", image: "/images/proj-duplex.png" },
-    { title: "Valley Estates", category: "Plots", status: "Ongoing", city: "Jamshedpur", image: "/images/plot-landscape.png" },
+    { title: "Valley Estates", category: "Plots", status: "Ongoing", city: "Jamshedpur", image: "/images/construction-site.png" },
     { title: "Horizon Apartments", category: "Residential", status: "Completed", city: "Ranchi", image: "/images/proj-township.png" },
     { title: "Business Park", category: "Commercial", status: "Completed", city: "Jamshedpur", image: "/images/proj-office.png" },
-    { title: "Garden Plots", category: "Plots", status: "Ongoing", city: "Hazaribagh", image: "/images/plot-landscape.png" },
+    { title: "Garden Plots", category: "Plots", status: "Ongoing", city: "Hazaribagh", image: "/images/proj-farmhouse.png" },
 ];
 
 export default function PortfolioGallery() {
