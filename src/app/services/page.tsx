@@ -40,7 +40,7 @@ const services = [
         description: "Modern architectural design services combining Vastu principles with contemporary aesthetics. 3D renders, floor plans, and complete design documentation.",
         features: ["Vastu-Compliant", "3D Visualization", "Interior Design", "Structural Drawing"],
         link: "/contact",
-        image: "/images/proj-villa.png",
+        image: "/images/project-villa.png",
         external: false,
     },
     {
@@ -51,7 +51,7 @@ const services = [
         description: "From land acquisition to township creation - complete real estate development solutions for residential colonies, commercial complexes, and mixed-use projects.",
         features: ["Land Acquisition", "Township Planning", "Commercial Projects", "Investment Advisory"],
         link: "/contact",
-        image: "/images/proj-commercial.png",
+        image: "/images/commercial-building.png",
         external: false,
     },
 ];
