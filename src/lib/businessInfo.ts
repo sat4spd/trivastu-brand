@@ -20,7 +20,7 @@ export interface BusinessInfo {
 export async function getBusinessInfo(): Promise<BusinessInfo> {
     try {
         const res = await fetch("https://api.trivastu.com/api/cms/business-info", {
-            next: { revalidate: 3600 } // Cache for 1 hour
+            cache: "no-store"
         });
         if (!res.ok) return {};
         return await res.json();
