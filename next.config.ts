@@ -49,7 +49,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ["three", "@react-three/fiber", "@react-three/drei", "lucide-react", "swiper"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "realty.trivastu.com" },
