@@ -22,7 +22,6 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(), payment=()",
   },
   {
-    // Allow inline scripts needed by Next.js, Google Analytics, Meta Pixel, GTM
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
@@ -50,6 +49,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  transpilePackages: ["three", "@react-three/fiber", "@react-three/drei", "lucide-react", "swiper"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "realty.trivastu.com" },
@@ -65,7 +65,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Apply security headers to all routes
         source: "/(.*)",
         headers: securityHeaders,
       },
