@@ -17,15 +17,32 @@ export interface BusinessInfo {
     twitter?: string;
 }
 
+const DEFAULT_BUSINESS_INFO: BusinessInfo = {
+    companyName: "Trivastu Ventures",
+    phone: "+91-8655202633",
+    whatsapp: "+91-8655202633",
+    email: "contact@trivastu.com",
+    address: "Ranchi, Jharkhand",
+    city: "Ranchi",
+    state: "Jharkhand",
+    pincode: "834001"
+};
+
 export async function getBusinessInfo(): Promise<BusinessInfo> {
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+
         const res = await fetch("https://api.trivastu.com/api/cms/business-info", {
-            cache: "no-store"
+            next: { revalidate: 60 },
+            signal: controller.signal
         });
-        if (!res.ok) return {};
-        return await res.json();
-    } catch (e) {
-        console.error("Failed to fetch business info:", e);
-        return {};
+        clearTimeout(timeoutId);
+
+        if (!res.ok) return DEFAULT_BUSINESS_INFO;
+        const data = await res.json();
+        return { ...DEFAULT_BUSINESS_INFO, ...data };
+    } catch {
+        return DEFAULT_BUSINESS_INFO;
     }
 }
